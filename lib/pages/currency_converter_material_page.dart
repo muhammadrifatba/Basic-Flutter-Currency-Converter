@@ -1,8 +1,34 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class CurrencyConverterMaterialPage extends StatelessWidget {
+class CurrencyConverterMaterialPage extends StatefulWidget {
   const CurrencyConverterMaterialPage({super.key});
+  @override
+  State<CurrencyConverterMaterialPage> createState() {
+    return _CurrencyConverterMaterialPageState();
+  }
+}
+
+class _CurrencyConverterMaterialPageState
+    extends State<CurrencyConverterMaterialPage> {
+  double result = 0;
+  final TextEditingController textEditingController = TextEditingController();
+
+  void convert() {
+    setState(() {
+      result = double.parse(textEditingController.text) * 15000;
+    });
+
+    //Can Be Written like below
+    // result = double.parse(textEditingController.text) * 15000;
+    // setState(() {
+    // });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
@@ -20,20 +46,21 @@ class CurrencyConverterMaterialPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Test',
-              style: TextStyle(
-                  fontSize: 45,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                style: const TextStyle(color: Colors.white),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Rp ${result != 0 ? result.toStringAsFixed(3) : result.toStringAsFixed(0)}',
+                style: const TextStyle(
+                    fontSize: 45,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+              TextField(
+                controller: textEditingController,
+                style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   hintText: 'Please Enter The Amount in USD',
                   hintStyle: const TextStyle(color: Colors.black),
@@ -47,25 +74,23 @@ class CurrencyConverterMaterialPage extends StatelessWidget {
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
+              const SizedBox(
+                height: 8,
+              ),
+              ElevatedButton(
                   onPressed: () {
-                    if (kDebugMode) {
-                      debugPrint('button Clicked');
-                    }
+                    //print(textEditingController.text);
                   },
-                  style: TextButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8)),
                       elevation: 5,
                       backgroundColor: Colors.grey,
                       foregroundColor: Colors.white,
                       minimumSize: const Size(double.infinity, 45)),
-                  child: const Text('Convert')),
-            )
-          ],
+                  child: const Text('Convert'))
+            ],
+          ),
         ),
       ),
     );
